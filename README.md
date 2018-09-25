@@ -16,7 +16,7 @@
 4. Update your Phabricator config
     1. Goto your phabricator directory (i.e `phabricator/`, make sure the directory has the file `LICENSE` and the folder `webroot` and `bin`)
     2. Execute `./bin/config set feed.http-hooks '["http://chat.example.com/hooks/abc/def"]'` (Use the `Webhook URL` copied in the step *1.iv*)
-    
+
 ## TODO
 * [ ] Use Confluence API to show the exact link of the comment instead of the link of the parent object
 * [ ] Remove the `LAST_BLOG_ID` variable and use Confluence API to fetch the blog link
