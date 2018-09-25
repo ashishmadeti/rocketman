@@ -1,5 +1,5 @@
-PHABRICATOR_ROOT_URL =  '< Complete url of the phabricator instance, ex: "http://phab.example.com/"'  // 'https://fab.provakil.com/'
-LAST_BLOG_ID = '< Integer denoting the last blog id, ex: if "http://phab.example.com/J2" is the most recent blog, then set this to "2"'  // 2
+PHABRICATOR_ROOT_URL =  '< Complete url of the phabricator instance, ex: "http://phab.example.com/" >'
+LAST_BLOG_ID = '< Integer denoting the last blog id, ex: if "http://phab.example.com/J2" is the most recent blog, then set this to "2" >'
 
 
 class Script {
