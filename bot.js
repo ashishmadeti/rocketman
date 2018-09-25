@@ -1,63 +1,56 @@
-/* exported Script */
-/* globals console, _, s */
+PHABRICATOR_ROOT_URL =  '< Complete url of the phabricator instance, ex: "http://phab.example.com/"'  // 'https://fab.provakil.com/'
+LAST_BLOG_ID = '< Integer denoting the last blog id, ex: if "http://phab.example.com/J2" is the most recent blog, then set this to "2"'  // 2
 
-/** Global Helpers
- *
- * console - A normal console instance
- * _       - An underscore instance
- * s       - An underscore string instance
- */
 
 class Script {
-  /**
-   * @params {object} request
-   */
-  process_incoming_request({ request }) {
-    // request.url.hash
-    // request.url.search
-    // request.url.query
-    // request.url.pathname
-    // request.url.path
-    // request.url_raw
-    // request.url_params
-    // request.headers
-    // request.user._id
-    // request.user.name
-    // request.user.username
-    // request.content_raw
-    // request.content
 
-    // console is a global helper to improve debug
-    console.log(request.content);
-    console.log(request.headers);
+    constructor() {
+        this.mostRecentBlogId = parseInt(LAST_BLOG_ID)
+    }
 
-    return {
-      content:{
-        text: request.content.text
-        // "attachments": [{
-        //   "color": "#FF0000",
-        //   "author_name": "Rocket.Cat",
-        //   "author_link": "https://open.rocket.chat/direct/rocket.cat",
-        //   "author_icon": "https://open.rocket.chat/avatar/rocket.cat.jpg",
-        //   "title": "Rocket.Chat",
-        //   "title_link": "https://rocket.chat",
-        //   "text": "Rocket.Chat, the best open source chat",
-        //   "fields": [{
-        //     "title": "Priority",
-        //     "value": "High",
-        //     "short": false
-        //   }],
-        //   "image_url": "https://rocket.chat/images/mockup.png",
-        //   "thumb_url": "https://rocket.chat/images/mockup.png"
-        // }]
-       }
-    };
+    /**
+     * @params {object} request
+     */
+    process_incoming_request({ request }) {
 
-    // return {
-    //   error: {
-    //     success: false,
-    //     message: 'Error example'
-    //   }
-    // };
-  }
+        // Regexes for finding different Phabricator objects
+        var maniphestRegex = /\b(T\d+):/ig;
+        var differentialRegex = /\b(D\d+):/ig;
+        var phameRegex = /\bpublished (Blog Post):/ig;
+        var diffusionRegex = /\b(R\d+:[0-9a-f]{10,40}):/ig;
+
+        var text = request.content.storyText;
+
+        var maniphestMatch = maniphestRegex.exec(text);
+        if (maniphestMatch) {
+            var replaceText = `[${maniphestMatch[1]}](${PHABRICATOR_ROOT_URL + maniphestMatch[1]})`
+            text = text.replace(maniphestMatch[1], replaceText);
+        }
+
+        var differentialMatch = differentialRegex.exec(text);
+        if (differentialMatch) {
+            var replaceText = `[${differentialMatch[1]}](${PHABRICATOR_ROOT_URL + differentialMatch[1]})`
+            text = text.replace(differentialMatch[1], replaceText);
+        }
+
+        var phameMatch = phameRegex.exec(text);
+        if (phameMatch) {
+            var nextBlogId = this.mostRecentBlogId + 1
+            var replaceText = `[${phameMatch[1]}](${PHABRICATOR_ROOT_URL + 'J' + nextBlogId})`
+            text = text.replace(phameMatch[1], replaceText)
+            this.mostRecentBlogId = nextBlogId
+        }
+
+        var diffusionMatch = diffusionRegex.exec(text);
+        if (diffusionMatch) {
+            var replaceText = `[${diffusionMatch[1]}](${PHABRICATOR_ROOT_URL + diffusionMatch[1]})`
+            text = text.replace(diffusionMatch[1], replaceText);
+        }
+
+        return {
+            content: {
+                text: text
+            }
+        };
+    }
 }
