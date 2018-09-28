@@ -47,6 +47,10 @@ class Script {
             text = text.replace(diffusionMatch[1], replaceText);
         }
 
+        if (!text) {
+            return;
+        }
+
         return {
             content: {
                 text: text
