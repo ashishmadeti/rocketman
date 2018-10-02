@@ -21,3 +21,4 @@
 * [ ] Use Confluence API to show the exact link of the comment instead of the link of the parent object
 * [ ] Remove the `LAST_BLOG_ID` variable and use Confluence API to fetch the blog link
 * [ ] Ping a Rocket.chat user (using @mention) when an issue is assigned to the user
+* [ ] Fetch callsigns of all repositories to improve Diffusion regex
