@@ -17,7 +17,7 @@ class Script {
         var maniphestRegex = /\b(T\d+):/ig;
         var differentialRegex = /\b(D\d+):/ig;
         var phameRegex = /\bpublished (Blog Post):/ig;
-        var diffusionRegex = /\b(R\d+:[0-9a-f]{10,40}):/ig;
+        var diffusionRegex = /\b(R(?:\d+:|[a-z]{1,10})[0-9a-f]{10,40}):/ig;
 
         var text = request.content.storyText;
 
